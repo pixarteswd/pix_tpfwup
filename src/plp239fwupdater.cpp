@@ -19,6 +19,8 @@ const byte Plp239FwUpdater::CLK_POW_BANK = 0x00;
 const byte Plp239FwUpdater::R_CLKS_PU_1 = 0x00;
 const byte Plp239FwUpdater::R_CLKS_PU_3 = 0x02;
 const byte Plp239FwUpdater::R_CLKS_PD_1 = 0x04;
+const byte Plp239FwUpdater::R_FW_VER_L = 0x16;
+const byte Plp239FwUpdater::R_FW_VER_H = 0x18;
 const byte Plp239FwUpdater::V_CLKS_1_CPU = 0x02;
 const byte Plp239FwUpdater::V_CLKS_3_L_LV_FLASH_CTRL = 0x40;
 const byte Plp239FwUpdater::V_CLKS_3_H_LV_FLASH_CTRL = 0x80;
@@ -754,7 +756,6 @@ void Plp239FwUpdater::releaseParameterBin()
 bool Plp239FwUpdater::loadUpgradeBin(char const* path)
 {
     static const int UPGRADE_FILE_SIZE = 45056 + 4096 + 8192;
-    bool ret;
     printf("Upgrade file path: %s\n", path);
     ifstream ifs(path, ifstream::in | ios::ate);
     ifs.unsetf(std::ios::skipws);
@@ -767,6 +768,7 @@ bool Plp239FwUpdater::loadUpgradeBin(char const* path)
     else if (size > UPGRADE_FILE_SIZE)
     {
         printf("File size too large. (%d > %d)\n", size, UPGRADE_FILE_SIZE);
+        return false;
     }
 
     ifs.seekg(0, ios::beg);
@@ -786,7 +788,7 @@ bool Plp239FwUpdater::loadUpgradeBin(char const* path)
     std::copy_n(istream_iterator<byte>(ifs), 8192,
             std::back_inserter(mTargetHidDesc));
     ifs.close();
-    return ret;
+    return true;
 }
 
 void Plp239FwUpdater::releaseUpgradeBin()
@@ -817,6 +819,14 @@ uint32_t Plp239FwUpdater::calCheckSum(byte const * const array, int length)
 void Plp239FwUpdater::releaseHidDescBin()
 {
     mTargetHidDesc.clear();
+}
+
+int Plp239FwUpdater::getFwVersion()
+{
+    int fwVer;
+    fwVer = mRegAccr->readRegister(CLK_POW_BANK, R_FW_VER_H);
+    fwVer = (fwVer << 8) | mRegAccr->readRegister(CLK_POW_BANK, R_FW_VER_L);
+    return fwVer;
 }
 
 bool Plp239FwUpdater::fullyUpgrade()

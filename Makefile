@@ -1,4 +1,4 @@
-APP = pix_tpfwup
+APP = pixtpfwup
 OUT := out
 SRC := $(wildcard src/*.cpp)
 OBJS := $(patsubst %.cpp,$(OUT)/%.o,$(notdir $(SRC)))

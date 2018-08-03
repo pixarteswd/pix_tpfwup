@@ -28,6 +28,8 @@ namespace pixart
         static const byte R_CLKS_PU_1;
         static const byte R_CLKS_PU_3;
         static const byte R_CLKS_PD_1;
+        static const byte R_FW_VER_L;
+        static const byte R_FW_VER_H;
         static const byte V_CLKS_1_CPU;
         static const byte V_CLKS_3_L_LV_FLASH_CTRL;
         static const byte V_CLKS_3_H_LV_FLASH_CTRL;
@@ -125,7 +127,9 @@ namespace pixart
         /** Text **/
         bool loadParameterFile(char const* path);
         bool loadHidDescFile(char const* path);
+        /**********/
 
+        int getFwVersion();
         bool fullyUpgrade();
         void writeFirmware(bool erase = true);
         void writeHidDesc();
