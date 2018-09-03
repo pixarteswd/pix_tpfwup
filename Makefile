@@ -3,8 +3,9 @@ OUT := out
 SRC := $(wildcard src/*.cpp)
 OBJS := $(patsubst %.cpp,$(OUT)/%.o,$(notdir $(SRC)))
 
-CXXFLAGS := -std=c++11 -Wall -g -O1
-LDFLAGS :=-g
+CXXFLAGS ?= -g -O1
+CXXFLAGS += -std=c++11 -Wall
+LDFLAGS ?= -g
 #LIBS = 
 
 all: dir $(APP)
