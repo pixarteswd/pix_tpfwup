@@ -614,21 +614,13 @@ bool Plp239FwUpdater::loadHidDescFile(char const* path)
             continue;
         }
 
-        __try
-        {
-            int b = stoi(line, nullptr, 16);
+        int b = stoi(line, nullptr, 16);
 #ifdef DEBUG            
-            printf("%02X ", b);
-            if (mTargetHidDesc.size()%30==29)
+        printf("%02X ", b);
+        if (mTargetHidDesc.size()%30==29)
             printf("\n");
 #endif //DEBUG
-            mTargetHidDesc.push_back(b);
-        }
-        __catch (...)
-        {
-            printf("exception.\n");
-            return false;
-        }
+        mTargetHidDesc.push_back(b);
     }
 
 #ifdef DEBUG
