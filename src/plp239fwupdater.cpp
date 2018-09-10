@@ -614,7 +614,7 @@ bool Plp239FwUpdater::loadHidDescFile(char const* path)
             continue;
         }
 
-        try
+        __try
         {
             int b = stoi(line, nullptr, 16);
 #ifdef DEBUG            
@@ -623,7 +623,8 @@ bool Plp239FwUpdater::loadHidDescFile(char const* path)
             printf("\n");
 #endif //DEBUG
             mTargetHidDesc.push_back(b);
-        } catch (...)
+        }
+        __catch (...)
         {
             printf("exception.\n");
             return false;
