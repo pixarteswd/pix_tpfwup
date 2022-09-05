@@ -1,11 +1,11 @@
-#ifndef __LINUX_REGISTER_ACCESSOR__
-#define __LINUX_REGISTER_ACCESSOR__
+#ifndef __LINUX_REGISTER_ACCESSOR_pjp255__
+#define __LINUX_REGISTER_ACCESSOR_pjp255__
 #include "registeraccessor.h"
 #include "hid.h"
 
 namespace pixart
 {
-    class Plp239RegAccr: public RegisterAccessor
+    class pjp255RegAccr: public RegisterAccessor
     {
     private:
         HidDevice* mHidDevice;
@@ -13,8 +13,8 @@ namespace pixart
         uint64_t mMaxBurstLength;
 
     public:
-        Plp239RegAccr(HidDevice* hidDevice);
-        virtual ~Plp239RegAccr();
+        pjp255RegAccr(HidDevice* hidDevice);
+        virtual ~pjp255RegAccr();
         virtual void prepare();
         virtual byte readRegister(byte bank, byte address);
 		virtual byte readuserRegister(byte bank, byte address);
@@ -27,10 +27,10 @@ namespace pixart
                 uint64_t length);
         virtual void burstWriteRegister(byte bank, byte address, byte* values,
                 uint64_t length);
- 	virtual byte readInputReport(void);
+        virtual void writeUserRegister(byte bank, byte address, byte value);
 	virtual int readUserRegisters(byte* data, byte bank, byte startAddress,
         uint64_t length);
-	virtual void writeUserRegister(byte bank, byte address, byte value);
+        virtual byte readInputReport(void);
     };
 }
 
